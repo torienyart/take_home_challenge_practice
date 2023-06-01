@@ -3,7 +3,8 @@ require "rails_helper"
 RSpec.describe "All Customer Subscription API", type: :request do
   before do
     @customer_1 = Customer.create!(first_name: "John", last_name: "Doe", email: "johndoe@gmail.com", address: "123 Main St Denver, CO 80204")
-    @customer_2 = Customer.create!(first_name: "John", last_name: "Doe", email: "johndoe@gmail.com", address: "123 Main St Denver, CO 80204")
+    @customer_2 = Customer.create!(first_name: "Jane", last_name: "Doe", email: "janedoe@gmail.com", address: "123 Main St Denver, CO 80204")
+    @customer_3 = Customer.create!(first_name: "Jimmy", last_name: "Doe", email: "jimmydoe@gmail.com", address: "123 Main St Denver, CO 80204")
 
     @tea_1 = Tea.create!(title: "Green Tea", description: "Green Tea Description", temperature: 180, brew_time: 120)
     @tea_2 = Tea.create!(title: "Black Tea", description: "Black Tea Description", temperature: 160, brew_time: 140)
@@ -31,20 +32,23 @@ RSpec.describe "All Customer Subscription API", type: :request do
       expect(json[:data][1][:attributes][:status]).to eq("cancelled")
       expect(json[:data][0][:type]).to eq("customer_subscription")
     end
+
+    it "returns a blank array when customer doesn't have any subscriptions" do
+      get "/api/v1/customers/#{@customer_3.id}/customer_subscriptions"
+      json = JSON.parse(response.body, symbolize_names: true)
+
+      expect(response).to be_successful
+      expect(json[:data].count).to eq(0)
+    end
   end
 
   context "when unsuccessful" do
-    xit "returns an error message when attributes are invalid" do
-      params = {
-        customer_id: @customer.id,
-        subscription_id: nil
-      }
-  
-      post "/api/v1/customers/#{@customer.id}/customer_subscriptions", params: params
+    it "returns an error message when customer doesn't exist" do
+      get "/api/v1/customers/45728904356/customer_subscriptions"
 
       json = JSON.parse(response.body, symbolize_names: true)
-      expect(response.status).to be 422
-      expect(json[:data][:attributes][:errors]).to eq(["Subscription must exist"])
+      expect(response.status).to eq(404)
+      expect(json[:errors]).to eq("Couldn't find Customer with 'id'=45728904356")
     end
   end
 end
