@@ -9,4 +9,6 @@ class ErrorSerializer
       error.full_message
     end
   end
+
+  
 end
