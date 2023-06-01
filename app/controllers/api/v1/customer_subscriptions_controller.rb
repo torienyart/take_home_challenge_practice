@@ -1,4 +1,14 @@
 class Api::V1::CustomerSubscriptionsController < ApplicationController
+  def index
+    if params[:customer_id]
+      customer = Customer.find(params[:customer_id])
+      render json: CustomerSubscriptionSerializer.new(customer.customer_subscriptions).serializable_hash
+    else
+      serialized_errors = ErrorSerializer.new(customer_subscription)
+      render json: serialized_errors, status: :unprocessable_entity
+    end
+  end
+
   def create
     customer_subscription = CustomerSubscription.new(customer_subscription_params)
     if customer_subscription.save
@@ -19,7 +29,7 @@ class Api::V1::CustomerSubscriptionsController < ApplicationController
       render json: serialized_errors, status: :unprocessable_entity
     end
 
-  rescue ActiveRecord::RecordNotFound, ArgumentError => e
+  rescue ArgumentError => e
     render json: {errors: e.message}, status: 404
   end
 
