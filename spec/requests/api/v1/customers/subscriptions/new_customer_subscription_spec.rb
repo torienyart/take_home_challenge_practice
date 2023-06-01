@@ -1,12 +1,7 @@
 require "rails_helper"
 
-RSpec.describe "New Subscription API", type: :request do
+RSpec.describe "New Customer Subscription API", type: :request do
   before do
-    Customer.destroy_all
-    Tea.destroy_all
-    Subscription.destroy_all
-    CustomerSubscription.destroy_all
-
     @customer = Customer.create!(first_name: "John", last_name: "Doe", email: "johndoe@gmail.com", address: "123 Main St Denver, CO 80204")
     @tea = Tea.create!(title: "Green Tea", description: "Green Tea Description", temperature: 180, brew_time: 120)
     @subscription = Subscription.create!(title: "Green Tea Subscription", price: 10.00, frequency_in_days: 30, tea_id: @tea.id)
