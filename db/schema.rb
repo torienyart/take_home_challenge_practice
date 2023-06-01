@@ -17,6 +17,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_31_203910) do
   create_table "customer_subscriptions", force: :cascade do |t|
     t.bigint "subscription_id"
     t.bigint "customer_id"
+    t.integer "status", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["customer_id"], name: "index_customer_subscriptions_on_customer_id"
@@ -34,8 +35,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_31_203910) do
 
   create_table "subscriptions", force: :cascade do |t|
     t.string "title"
-    t.integer "price"
-    t.integer "status", default: 0
+    t.float "price"
     t.integer "frequency_in_days"
     t.bigint "tea_id"
     t.datetime "created_at", null: false
