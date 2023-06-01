@@ -16,10 +16,14 @@ RSpec.describe "New Customer Subscription API", type: :request do
   
       post "/api/v1/customers/#{@customer.id}/customer_subscriptions", params: params
       json = JSON.parse(response.body, symbolize_names: true)
-
       expect(response).to be_successful
       expect(json[:data][:attributes][:customer_id]).to eq(@customer.id)
       expect(json[:data][:attributes][:subscription_id]).to eq(@subscription.id)
+      expect(json[:data][:attributes][:status]).to eq("active")
+      expect(json[:data][:attributes][:title]).to eq("Green Tea Subscription")
+      expect(json[:data][:attributes][:price]).to eq(10.00)
+      expect(json[:data][:attributes][:frequency_in_days]).to eq(30)
+      expect(json[:data][:attributes][:tea_id]).to eq(@tea.id)
     end
   end
 

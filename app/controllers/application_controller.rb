@@ -1,8 +1,7 @@
 class ApplicationController < ActionController::API
-  # rescue_from ActiveRecord::RecordNotFound, with: :error_response
+  rescue_from ActiveRecord::RecordNotFound, with: :error_response
 
-  # def error_response(error)
-  #   serialized_error = ErrorSerializer.new(error).serializable_hash[:data][:attributes]
-  #   render json: serialized_error, status: :not_found
-  # end
+  def error_response(error)
+    render json: {errors: error.message}, status: 404
+  end
 end
