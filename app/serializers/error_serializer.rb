@@ -4,8 +4,9 @@ class ErrorSerializer
     "That didn't work"
   end
 
-  attribute :errors do |error|
-    require 'pry'; binding.pry
-    [error.message]
+  attribute :errors do |item|
+    errors = item.errors.map do |error|
+      error.full_message
+    end
   end
 end
