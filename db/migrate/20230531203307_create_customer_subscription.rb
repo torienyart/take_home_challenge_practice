@@ -5,7 +5,6 @@ class CreateCustomerSubscription < ActiveRecord::Migration[7.0]
       t.references :customer
       t.integer :status, default: 0
 
-
       t.timestamps
     end
   end
